@@ -191,9 +191,15 @@ namespace _1DV402.S3
                   Console.WriteLine("Det uppstod ett fel vid inläsning av fil");
                 }
 
+                //**** skriver ut om det lyckats!**** //
+                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                Console.WriteLine(" ║         Recepten har lästs in        ║ ");
+                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+
 
                 //**** skriver ut ord**** //
-
                 int hej = 0;
                 Console.WriteLine("ALLA ORD MED COMMATECNKNK!!!!!!");
                 foreach (string word in measures)

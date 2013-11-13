@@ -10,19 +10,25 @@ namespace _1DV402.S3
     class Program
     {
         static void Main(string[] args)
-        {
-        
-    
-           int menuNum =  GetMenuChoice();
+        {         
+           
+        do {
+            switch(GetMenuChoice())
+            {
+                case 0:
+                      Console.BackgroundColor = ConsoleColor.Red;
+                   Console.ForegroundColor = ConsoleColor.White;
+                   Console.WriteLine("Programmet kommer nu att avslutas");
+                   System.Threading.Thread.Sleep(1500);
+                   return;
 
-           if (menuNum == 1) {
+                case 1: 
                try
-               { // RecipeRepository add = new RecipeRepository();
-                   // add.Load();
-
-                   RecipeRepository repository = new RecipeRepository();  //anropar 
-                   repository.Load();
+               { 
+                   RecipeRepository repository = new RecipeRepository();  // Ny instans av RecipeRepository
+                   repository.Load(); // Anropar metoden Load i RecipeRepository, som 
                    repository.Path = "recipes.txt";
+                   ContinueOnKeyPressed();
                   
                }
 
@@ -33,16 +39,23 @@ namespace _1DV402.S3
                    ViewErrorMessage(ex.Message);
                    Console.ResetColor();
                }
+                ContinueOnKeyPressed();
+                    break;
+              case 2:
+                 break;
+              case 3:
+                    break;
+              case 4: break;
+              case 5: break;
+                  
 
-               Console.ForegroundColor = ConsoleColor.White;
-               Console.BackgroundColor = ConsoleColor.DarkBlue;
-               Console.Write("\n    Tryck tangent för att fortsätta ");
-               Console.ResetColor();
-               Console.CursorVisible = false;
-               Console.ReadKey(true);
-               Console.Clear();
-               Console.CursorVisible = true;
-           }
+
+
+             
+
+        } // end switch
+
+        } while (true);
 
 
             /*Metoden Main ska anropa metoden GetMenuChoice() för att visa en meny. Så längs som användaren 
@@ -66,15 +79,30 @@ innehållande referenser till Recipe-objekt ska returneras.
 Inträffar ett fel i samband med att recepten läses in ska ett felmeddelande visas och metoden returnera 
 värdet null.*/
         }
-
-        public static void ViewErrorMessage(string message)
+         public static void ViewErrorMessage(string message)
         {
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(message);
             Console.ResetColor();
         }
-
+        public static void ContinueOnKeyPressed()
+        {
+               Console.ForegroundColor = ConsoleColor.White;
+               Console.BackgroundColor = ConsoleColor.DarkBlue;
+               Console.Write("\n    Tryck tangent för att fortsätta ");
+               Console.ResetColor();
+               Console.CursorVisible = false;
+               Console.ReadKey(true);
+               Console.Clear();
+               Console.CursorVisible = true;
+        }
+        /*
+         ContinueOnKeyPressed
+I flera situationer kan det vara lämpligt att användaren uppmanas att trycka på en tangent innan 
+konsolfönstrets innehåll rensas och ersätts. Istället för att upprepa koden som uppmanar användaren att 
+trycka på en tangent för att fortsätta placeras lämpligen den koden i metoden 
+ContinueOnKeyPressed(), som enkelt kan anropas vid behov.*/
 
 
 
@@ -100,37 +128,88 @@ värdet null.*/
                 Console.WriteLine("\n - Visa------------------------------------\n");
                 Console.WriteLine(" 4. Visa recept.");
                 Console.WriteLine(" 5. Visa alla recept.");
-                Console.WriteLine(" Ange menyval [0-5:]");
-                
+                Console.WriteLine(" Ange menyval [0-5:]");               
 
                 if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
                 { return index; }
-
 
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och 5. \n");
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.Write("\n    Tryck tangent för att fortsätta ");
-                Console.ResetColor();
-                Console.CursorVisible = false;
-                Console.ReadKey(true);
-                Console.Clear();
-                Console.CursorVisible = true;
+                 ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
+
             } while (true);
-            
-            /*
-           Metoden GetMenuChoice() ska presentera en meny, läsa in menyalternativet användaren väljer och 
-            returnera det heltal som symboliserar menyvalet. Metoden ska validera det användaren matar in så att 
-            endast heltal knutna till menykommandon godtas. Matar användaren in något som inte kan tolkas som 
-            ett heltal knutet till ett menykommando ska ett felmeddelande visas.
            
-           */
-
-
         }
+
+        private static Recipe GetRecipe(string header, List<Recipe> recipes)
+
+        {  // presenterar en Lista med receptens namn
+
+            
+             int index;
+            do
+            {
+                Console.Clear();
+                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                Console.WriteLine(" ║         Välj recept att visa         ║ ");
+                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                Console.ResetColor();
+                Console.WriteLine(" 0. Avbryt.");
+                Console.WriteLine("\n -----------------------------------------\n");
+                Console.WriteLine(" 1. Öppna textfil med recept.");
+                Console.WriteLine(" 2. Spara recept på textfil.");
+                Console.WriteLine("\n - Redigera--------------------------------\n");
+                Console.WriteLine(" 3. Ta bort recept.");
+                Console.WriteLine("\n - Visa------------------------------------\n");
+                Console.WriteLine(" 4. Visa recept.");
+                Console.WriteLine(" 5. Visa alla recept.");
+                Console.WriteLine(" Ange menyval [0-5:]");               
+
+                if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
+                { int choiceR = index; }
+
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och 5. \n");
+
+                 ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
+
+            } while (true);
+
+           
+ /* Metoden GetRecipe  presenterar en indexerad lista med samtliga recepts namn. Användaren ska bara kunna välja 
+   bland de index som är knutna till recept. 
+  *
+                Värdet 0 ska användaren kunna välja för att avbryta förfarandet att välja ett recept. I så fall ska 
+                metoden returnera värdet null.
+                Se Figur 5 på sidan 6, eller Figur 7 på sidan 7, för exempel på hur en indexerad lista med recepts namn 
+                kan utformas.*/
+            return Recipe;
+        }
+
+        private static void ViewRecipe(List<Recipe> recipes, [bool viewAll = false]))
+
+        {/* GetRecipe ska returnera en referens till det recept som blivit och 
+          *ViewRecipe() anropar denna metod för att få reda på vilket 
+            recept som ska tas bort respektive visas.
+          
+        ViewRecipe kunna visa ett enskilt recept eller samtliga recept. Metoden har två 
+        parametrar. Den första parametern recipes är en referens till listan med referenser till recept. Den 
+        andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
+        Om ett recept ska visas ska metoden GetRecipe() anropas för att erhålla en referens till receptet. 
+        Oavsett om ett eller flera recept ska visas ska en instans av typen RecipeView sköta presentationen.
+       
+          
+          */ 
+        
+        
+        }
+
+
 
 
     }
