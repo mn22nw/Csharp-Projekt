@@ -199,12 +199,12 @@ namespace _1DV402.S3
                 foreach (string word in measures)
                 { Console.Write(" {0}", measures[hej++]); }
 
-                Recipe newIngredientInR1 = new Recipe("hej");
+           /*     Recipe newIngredientInR1 = new Recipe("hej");
                 foreach (Ingredient ingrediensObj in newIngredientInR1.Ingredients)
                 {
                     Console.WriteLine("RUMPLEEE {0}", ingrediensObj);
                 }
-
+            */
                 return listRecipes;
                
 

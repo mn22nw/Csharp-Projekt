@@ -11,8 +11,39 @@ namespace _1DV402.S3
     {
         static void Main(string[] args)
         {
+        
+    
+           int menuNum =  GetMenuChoice();
 
-            //  = GetMenuChoice();
+           if (menuNum == 1) {
+               try
+               { // RecipeRepository add = new RecipeRepository();
+                   // add.Load();
+
+                   RecipeRepository repository = new RecipeRepository();  //anropar 
+                   repository.Load();
+                   repository.Path = "recipes.txt";
+                  
+               }
+
+               catch (ArgumentException ex)
+               {
+                   Console.BackgroundColor = ConsoleColor.Red;
+                   Console.ForegroundColor = ConsoleColor.White;
+                   ViewErrorMessage(ex.Message);
+                   Console.ResetColor();
+               }
+
+               Console.ForegroundColor = ConsoleColor.White;
+               Console.BackgroundColor = ConsoleColor.DarkBlue;
+               Console.Write("\n    Tryck tangent för att fortsätta ");
+               Console.ResetColor();
+               Console.CursorVisible = false;
+               Console.ReadKey(true);
+               Console.Clear();
+               Console.CursorVisible = true;
+           }
+
 
             /*Metoden Main ska anropa metoden GetMenuChoice() för att visa en meny. Så längs som användaren 
             inte väljer att avsluta applikationen, genom att välja menyalternativet 0, ska menyn visas på nytt efter 
@@ -21,23 +52,7 @@ namespace _1DV402.S3
             SaveRecipes(), CreateRecipe(), DeleteRecipe() eller ViewRecipe() anropas.*/
 
 
-            try
-            { // RecipeRepository add = new RecipeRepository();
-                // add.Load();
-
-                RecipeRepository repository = new RecipeRepository();  //anropar 
-                repository.Load();
-                repository.Path = "recipes.txt";
-
-            }
-
-            catch (ArgumentException ex)
-            {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.White;
-                ViewErrorMessage(ex.Message);
-                Console.ResetColor();
-            }
+            
 
             /*public void someMethod(){
     List<String> namesList = buildNamesList(); 
@@ -75,6 +90,7 @@ värdet null.*/
                 Console.WriteLine(" ╔══════════════════════════════════════╗ ");
                 Console.WriteLine(" ║         Receptsamling med fil        ║ ");
                 Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                Console.ResetColor();
                 Console.WriteLine("\n - Arkiv ----------------------------------\n");
                 Console.WriteLine(" 0. Avsluta.");
                 Console.WriteLine(" 1. Öppna textfil med recept.");
@@ -85,17 +101,31 @@ värdet null.*/
                 Console.WriteLine(" 4. Visa recept.");
                 Console.WriteLine(" 5. Visa alla recept.");
                 Console.WriteLine(" Ange menyval [0-5:]");
-                Console.ResetColor();
+                
 
-                if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5)
+                if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
                 { return index; }
+
+
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och 5. \n");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.Write("\n    Tryck tangent för att fortsätta ");
+                Console.ResetColor();
+                Console.CursorVisible = false;
+                Console.ReadKey(true);
+                Console.Clear();
+                Console.CursorVisible = true;
             } while (true);
             
             /*
            Metoden GetMenuChoice() ska presentera en meny, läsa in menyalternativet användaren väljer och 
             returnera det heltal som symboliserar menyvalet. Metoden ska validera det användaren matar in så att 
             endast heltal knutna till menykommandon godtas. Matar användaren in något som inte kan tolkas som 
-               ett heltal knutet till ett menykommando ska ett felmeddelande visas.
+            ett heltal knutet till ett menykommando ska ett felmeddelande visas.
            
            */
 
