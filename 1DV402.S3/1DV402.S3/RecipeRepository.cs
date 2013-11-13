@@ -14,8 +14,6 @@ namespace _1DV402.S3
         private string _path = "recipes.txt"; // Privat fält av typen string innehållande sökvägen till den fil en instans av RecipeRepository arbetar mot
         public string Path
         {
-
-
             get { return _path; }
 
             set
@@ -23,20 +21,14 @@ namespace _1DV402.S3
                 if ((string.IsNullOrWhiteSpace(value))) //kollar att namnet inte refererar till null eller är en tom sträng
                 {
                     throw new ArgumentException("Sökvägen är tom!!!");
-
                 }
                 _path = value;
             }
-
         }
-
-
-
-
 
         public List<Recipe> Load() // public List<Recipe> Load()
         {
-            List<string> measures = new List<string>(1000);  // skapar en lista som kan lagra informationen mellan skiljetecknen
+            List<string> measures = new List<string>();  // skapar en lista som kan lagra informationen mellan skiljetecknen
             List<Recipe> listRecipes = new List<Recipe>(); // skapar en lista för recept
           //  listRecipes.Add(Ingredient); 
 
@@ -50,9 +42,6 @@ namespace _1DV402.S3
                     using (StreamReader reader = new StreamReader(Path)) // using öppnar/stänger filen automatiskt när man har använt den. 
                     {
                         string line; // skapar en ny variabel string
-                       
-                        
-
 
                         //   Den publika metoden Load() ska läsa in textfilen och tolka den för att skapa en lista med referenser 
                         //    till Recipe-objekt som returneras.
@@ -187,8 +176,14 @@ namespace _1DV402.S3
                 }
                 catch (Exception)
                 {
-                  
-                  Console.WriteLine("Det uppstod ett fel vid inläsning av fil");
+                    //**** FELMEDDELANDE**** //
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                    Console.WriteLine(" ║       FEL! Ett fel inträffade        ║ ");
+                    Console.WriteLine(" ║        när recepten lästes in        ║ ");
+                    Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                    Console.ResetColor();
                 }
 
                 //**** skriver ut om det lyckats!**** //
@@ -197,7 +192,7 @@ namespace _1DV402.S3
                 Console.WriteLine(" ╔══════════════════════════════════════╗ ");
                 Console.WriteLine(" ║         Recepten har lästs in        ║ ");
                 Console.WriteLine(" ╚══════════════════════════════════════╝ ");
-
+                Console.ResetColor();
 
                 //**** skriver ut ord**** //
                 int hej = 0;

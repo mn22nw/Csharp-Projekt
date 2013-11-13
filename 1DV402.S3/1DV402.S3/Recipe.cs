@@ -27,9 +27,9 @@ namespace _1DV402.S3
        }
 
        public string Name  //Publik egenskap av typen string som ger eller sätter namnet på receptet
-       {  
+       {
 
-           get { return _name; }
+           get { return _name; }  
 
            set {
                if (value == null || value == String.Empty) //kollar att namnet inte refererar till null eller är en tom sträng
@@ -38,23 +38,23 @@ namespace _1DV402.S3
                }
                _name = value;   
            }
-       } //returnerar namnet
-
+       } 
 
        public void Add(Ingredient ingredient) //används för att lägga till en ny ingrediens till ett recept
        {
-          //// List<Ingredient> newIngredient = new List<Ingredient>();
            _ingredients.Add(ingredient); 
-
-       //  //  newIngredient.Add(ingredient); 
-
-       // //   ReadOnlyCollection<Ingredient> newIngredient2 = new ReadOnlyCollection<Ingredient>(newIngredient);
        }
 
        public void Add(string direction) //används för att lägga till en ny instruktion till ett recept
        {
-           //string WHOUH
+           _direction.Add(direction);
        }
+
+             //----- CompareTo -----//   
+     /*  Metoderna CompareTo ska jämföra två objekt med avseende på fältet för receptets namn. 
+      •  Refererar parametern till ett objekt vars namn ska sorteras efter det anropande objektets namn ska ett heltal mindre än 0 returneras.
+      •  Refererar parametern till ett objekt vars namn ska sorteras före det anropande objektets namn ska ett heltal större än 0 returneras.
+      •  Refererar parametern till ett objekt ett objekt vars namn är samma som det anropande objektets namn ska heltalet 0 returneras.*/   
 
        public int CompareTo(object obj)
        {
@@ -69,20 +69,9 @@ namespace _1DV402.S3
                throw new ArgumentException("Value is not a number.");}
 
                return Convert.ToInt32(obj); //Måste retourrurunera ;)
-       }
+            }
 
-       /*Metoderna CompareTo ska jämföra två objekt med avseende på fältet för receptets namn. 
-
-•  Refererar parametern till ett objekt vars namn ska sorteras efter det anropande objektets namn 
-ska ett heltal mindre än 0 returneras.
-•  Refererar parametern till ett objekt vars namn ska sorteras före det anropande objektets namn 
-ska ett heltal större än 0 returneras.
-•  Refererar parametern till ett objekt ett objekt vars namn är samma som det anropande 
-objektets namn ska heltalet 0 returneras.*/
-
-     
-
-       public int CompareTo(Recipe other)
+        public int CompareTo(Recipe other)
        {    //Metoden CompareTo(Recipe other) används av metoden List.Sort() då instanser av typen Recipe ska sorteras
            return 5; //Måste retourrurunera ;)
        }
@@ -104,9 +93,6 @@ objektets namn ska heltalet 0 returneras.*/
        }
 
       // HUUUH?! RUMPLE BAJSAR?!     
-
-
-
 
                 //    StringBuilder[] array = new StringBuilder[1];
                 //array[0] = new StringBuilder();
