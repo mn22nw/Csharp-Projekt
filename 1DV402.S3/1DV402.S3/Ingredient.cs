@@ -6,18 +6,22 @@ using System.Threading.Tasks;
 
 namespace _1DV402.S3
 {
-    struct Ingredient
+    struct Ingredient 
     {
-        public string Amount { get; set; }
-        public string Measure { get; set; }
-        public string Name { get; set; }
+        /* För att lagra information om en ingrediens ska en struktur användas. Strukturen ska vara enkelt 
+            utformad och bara ha autoimplementerade egenskaper, vilket innebär att varken mängd, mått eller 
+            namn på något sätt ska valideras. Den ska dock överskugga metoden ToString() så att en 
+            textbeskrivning av en ingrediens kan fås på ett enkelt sätt.*/ 
+
+        public string Amount { get; set; } // mängden det ka vara av en ingrediens
+        public string Measure { get; set; }  // vilket mått ingrediensen ska använda
+        public string Name { get; set; } // namnet på ingrediensen
 
 
-        public override string ToString()
+        public override string ToString() // Ska enkelt beskriva en ingrediens 
         {
-           
-            return String.Format("{0} {1} {2}", Amount, Measure, Name );    
+            return String.Format("Mängd: {0},  Mått: {1}, Namn på ingrediens: {2}", Amount, Measure, Name );    
         }
 
-    }
+    }   
 }

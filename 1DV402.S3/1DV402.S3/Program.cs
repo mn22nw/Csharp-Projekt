@@ -30,11 +30,19 @@ namespace _1DV402.S3
                     case 1:  // Ska läsa in recept (men inte visa dom)
                         LoadRecipes();
                         break;
-                    case 2:
+                    case 2:   // ska kunna spara recept
                         break;
-                    case 3:
+                    case 3:  // ska kunna ta bort recept
                         break;
-                    case 4: //
+                    case 4: 
+                        RecipeView showARecipe = new RecipeView();
+                        RecipeRepository listRecipes = new RecipeRepository("recipes.txt");
+
+                        showARecipe.Render(listRecipes.Load()); // Load innehåller den sorterade listan
+
+                      //  Render(Resiperepostgs
+                    // Här ska en lista med samtliga recepts namn presenteras varefter användaren ska kunna välja det recept som ska visas.
+                   
                         break;
                     case 5:  // Ska visa ALLA recepten sorterade efter receptens namn.
                         //För att visa recept måste det finns recept att visa. Saknas recept ska ett meddelande visas som informerar 
@@ -45,36 +53,44 @@ namespace _1DV402.S3
 
             } while (true);
 
-
-
             /*public void someMethod(){
-    List<String> namesList = buildNamesList(); 
-}*/
-
+    List<String> namesList = buildNamesList(); */
 
         }
 
 
         private static List<Recipe> LoadRecipes()
         {
-            /*   Metoden LoadRecipes() läser in recepten från en textfil genom att använda en instans av klassen RecipeRepsoitory.
+       /*   Metoden LoadRecipes() läser in recepten från en textfil genom att använda en instans av klassen RecipeRepsoitory.
           Då recepten lästs in utan problem ska ett rättmeddelande visas och en referens till ett List-objekt innehållande referenser till
           Recipe-objekt ska returneras.
           Inträffar ett fel i samband med att recepten läses in ska ett felmeddelande visas och metoden returnera värdet null.*/
             try
             {
-                RecipeRepository repository = new RecipeRepository();  // Ny instans av RecipeRepository
+                RecipeRepository repository = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
                 repository.Load(); // Anropar metoden Load i RecipeRepository, som läser in .txt filen
-                repository.Path = "recipes.txt";
                 ContinueOnKeyPressed();
             }
-            catch (ArgumentException ex)
+            catch
             {
+                //**** FELMEDDELANDE**** //
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
-                ViewErrorMessage(ex.Message);
+                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                Console.WriteLine(" ║       FEL! Ett fel inträffade        ║ ");
+                Console.WriteLine(" ║        när recepten lästes in        ║ ");
+                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
                 Console.ResetColor();
+                return null;
             }
+
+            //**** skriver ut om det lyckats!**** //
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+            Console.WriteLine(" ║         Recepten har lästs in        ║ ");
+            Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+            Console.ResetColor();
 
             return null;
         }
@@ -97,14 +113,6 @@ namespace _1DV402.S3
             Console.Clear();
             Console.CursorVisible = true;
         }
-        /*
-         ContinueOnKeyPressed
-I flera situationer kan det vara lämpligt att användaren uppmanas att trycka på en tangent innan 
-konsolfönstrets innehåll rensas och ersätts. Istället för att upprepa koden som uppmanar användaren att 
-trycka på en tangent för att fortsätta placeras lämpligen den koden i metoden 
-ContinueOnKeyPressed(), som enkelt kan anropas vid behov.*/
-
-
 
         private static int GetMenuChoice()
         {
@@ -139,13 +147,15 @@ ContinueOnKeyPressed(), som enkelt kan anropas vid behov.*/
                 ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
 
             } while (true);
-
         }
 
-        private static Recipe GetRecipe(string header, List<Recipe> recipes)
-        {  // presenterar en Lista med receptens namn
-
-
+        private static Recipe GetRecipe(string header, List<Recipe> recipes) // presenterar en indexerad lista med samtliga receptens namn
+        {  
+             /* Användaren ska bara kunna välja bland de index som är knutna till recept.    --HUH?
+             *
+             Värdet 0 ska användaren kunna välja för att avbryta förfarandet att välja ett recept. 
+              I så fall ska metoden returnera värdet null.*/
+                  
             int index;
             do
             {
@@ -158,17 +168,19 @@ ContinueOnKeyPressed(), som enkelt kan anropas vid behov.*/
                 Console.ResetColor();
                 Console.WriteLine(" 0. Avbryt.");
                 Console.WriteLine("\n -----------------------------------------\n");
-                Console.WriteLine(" 1. Öppna textfil med recept.");
-                Console.WriteLine(" 2. Spara recept på textfil.");
-                Console.WriteLine("\n - Redigera--------------------------------\n");
-                Console.WriteLine(" 3. Ta bort recept.");
-                Console.WriteLine("\n - Visa------------------------------------\n");
-                Console.WriteLine(" 4. Visa recept.");
-                Console.WriteLine(" 5. Visa alla recept.");
-                Console.WriteLine(" Ange menyval [0-5:]");
+                
 
+                Console.WriteLine(" Ange menyval [0-5:]");
+               
+                int choiceR;
                 if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
-                { int choiceR = index; }
+                { choiceR = index;
+                
+                if (choiceR == 0)
+                {
+                  return null;
+                 }
+                }
 
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
@@ -178,18 +190,10 @@ ContinueOnKeyPressed(), som enkelt kan anropas vid behov.*/
 
             } while (true);
 
-
-            /* Metoden GetRecipe  presenterar en indexerad lista med samtliga recepts namn. Användaren ska bara kunna välja 
-              bland de index som är knutna till recept. 
-             *
-                           Värdet 0 ska användaren kunna välja för att avbryta förfarandet att välja ett recept. I så fall ska 
-                           metoden returnera värdet null.
-                           Se Figur 5 på sidan 6, eller Figur 7 på sidan 7, för exempel på hur en indexerad lista med recepts namn 
-                           kan utformas.*/
-            return null;
+            return null; // vet inte vad som ska va här!
         }
 
-        /*  private static void ViewRecipe(List<Recipe> recipes, [bool viewAll = false]))
+  private static void ViewRecipe(List<Recipe> recipes, bool viewAll = false)
 
           {/* GetRecipe ska returnera en referens till det recept som blivit och 
             *ViewRecipe() anropar denna metod för att få reda på vilket 
@@ -200,7 +204,7 @@ ContinueOnKeyPressed(), som enkelt kan anropas vid behov.*/
           andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
           Om ett recept ska visas ska metoden GetRecipe() anropas för att erhålla en referens till receptet. 
           Oavsett om ett eller flera recept ska visas ska en instans av typen RecipeView sköta presentationen.
- */
+ */ }
     }
 }
 

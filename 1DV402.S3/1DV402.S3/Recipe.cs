@@ -8,7 +8,12 @@ using System.Collections.ObjectModel;
 
 namespace _1DV402.S3
 {
-    class Recipe :IComparable<Recipe>
+    class Recipe : IComparable, IComparable<Recipe>
+
+        /*Klassen Recipe beskriver ett recept med ett namn, en lista med ingredienser och en lista med instruktioner. 
+                
+        Då recept ska visas ska en instans av klassen RecipeView användas, som till skillnad mot klassen 
+        Recipe vet hur ett, eller flera, recept skrivs ut i ett konsolfönster. */
 
     {
         private List<string> _direction = new List<string>();   // används för att representera ett recepts instruktioner.
@@ -28,7 +33,6 @@ namespace _1DV402.S3
 
        public string Name  //Publik egenskap av typen string som ger eller sätter namnet på receptet
        {
-
            get { return _name; }  
 
            set {
@@ -61,32 +65,43 @@ namespace _1DV402.S3
           //Metoden CompareTo(object obj) används t.ex. av metoden Array.Sort() då instanser av typen Recipe ska sorteras
            
            if (obj == null) // om parametern = null returneras ett heltal större än 0 
-           { obj = 1; }
+           { return 1; 
+           }
 
-           
-           if (obj.GetType() != typeof(Recipe)) // om obj (parametern) inte är av typen Recipe så kastas ett undantag
+
+           Recipe other = obj as Recipe; // om obj (parametern) inte är av typen Recipe så kastas ett undantag
+           if (other == null)
+           { throw new ArgumentException("Objektet är inte ett recept"); }
+
+           return Name.CompareTo(other.Name); 
+       }
+ 
+       /*    if (obj.GetType() != typeof(Recipe)) // om obj (parametern) inte är av typen Recipe så kastas ett undantag
            { 
                throw new ArgumentException("Value is not a number.");}
 
                return Convert.ToInt32(obj); //Måste retourrurunera ;)
-            }
+            }*/
 
         public int CompareTo(Recipe other)
-       {    //Metoden CompareTo(Recipe other) används av metoden List.Sort() då instanser av typen Recipe ska sorteras
+       {   
+            
+            
+            //Metoden CompareTo(Recipe other) används av metoden List.Sort() då instanser av typen Recipe ska sorteras
            return 5; //Måste retourrurunera ;)
        }
 
         // ------ KONSTRUKTORER ------ //
        public Recipe(string name) //:this(name,0,0)
        {
-           _name= name;
+           Name= name;
            
            //namnet på receptet JUUEE   ÅHÅ!  - anropa denna från RecipeRepository juue
        }
 
        public Recipe(string name, List<Ingredient> ingredients, List<string> directions)
        {
-           _name = name;
+           Name = name;
            _direction = directions;
            _ingredients = ingredients;
           

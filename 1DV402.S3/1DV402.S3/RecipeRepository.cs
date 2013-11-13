@@ -9,6 +9,11 @@ namespace _1DV402.S3
 {
     class RecipeRepository
     {
+        /*  RecipeRepository ansvarar för allt som har med persistent lagring av recept, d.v.s. klassen har 
+               metoder för att läsa recept från en textfil och skriva recept till en textfil.
+               Klassen använder i samband med inläsning av recept lämpligen den uppräkningsbara typen RecipeReadStatus för att hålla 
+               ordningen på vilken typ av data som lästs in från textfilen.*/
+
         public enum RecipeReadStatus { Indefinite, New, Ingredient, Direction };
 
         private string _path = "recipes.txt"; // Privat fält av typen string innehållande sökvägen till den fil en instans av RecipeRepository arbetar mot
@@ -30,7 +35,7 @@ namespace _1DV402.S3
         {
             List<string> measures = new List<string>();  // skapar en lista som kan lagra informationen mellan skiljetecknen
             List<Recipe> listRecipes = new List<Recipe>(); // skapar en lista för recept
-          //  listRecipes.Add(Ingredient); 
+          // listRecipes.Add(Ingredient); 
 
            ///////// List<Ingredient> listIngredients = new List<Ingredient>();
             
@@ -45,7 +50,8 @@ namespace _1DV402.S3
 
                         //   Den publika metoden Load() ska läsa in textfilen och tolka den för att skapa en lista med referenser 
                         //    till Recipe-objekt som returneras.
-
+                        Recipe currentRecipe = null;
+                   
                         do
                         {
                             line = reader.ReadLine(); // tilldelar variabeln line värdet för en avläst rad
@@ -61,8 +67,7 @@ namespace _1DV402.S3
 
                             if (line == "[Recept]" || line == "[Ingredienser]" || line == "[Instruktioner]")
                             {
-                               
-                              
+
                                 if (line == "[Recept]")
                                 {
                                     status = RecipeReadStatus.New;  //* RÄTT *//
@@ -106,53 +111,36 @@ namespace _1DV402.S3
                                 {
 
                                     case RecipeReadStatus.New ://  nytt recept 
-                                    Console.Write(status);
-                                        // Skapa nytt receptobjekt med receptets namn
-                                         Recipe nameOfRecipe = new Recipe(line);
-                                         Console.WriteLine("TITELI \n{0}", nameOfRecipe.Name);
-                                        break;
+                                    
+                                             if(currentRecipe != null)
+                                             listRecipes.Add(currentRecipe);
+                                            // Skapa nytt receptobjekt med receptets namn
+                                            currentRecipe = new Recipe(line);
+                                            Console.WriteLine("TITELI \n{0}", currentRecipe.Name);
+                                            break;
                                                                                
                                     case RecipeReadStatus.Ingredient: //ingrediens
-                                        Console.Write(status);
                                       //   string[] scores = line.Split(new char[] { ';', ' ' },
                                       //    StringSplitOptions.RemoveEmptyEntries); // tar bort mellanslag
 
-                                           string[] scores = line.Split(';');
-                                           measures.AddRange(scores);
                                            
-                                        var e = from s in scores select s;  
-                                        int c = e.Count(); //Räknar ut hur många 
-                                        Console.WriteLine("HUR MÅNGA!!!!! {0}",c);
-                                      if (c != 3)
-                                        {
-                                           throw new ArgumentException("Fel antal ingredienser!!");
-                                         }
-
+                                    string[] scores = line.Split(';');
+                                    int count = scores.Count(); //Räknar ut hur många 
+                                    Console.WriteLine("HUR MÅNGA!!!!! {0}", count);
+                                    if (count != 3)
+                                    {
+                                        throw new ArgumentException("Fel antal ingredienser!!");
+                                    }
+                                   
+                                    measures.AddRange(scores); 
+ 
                                       Ingredient IngrediensObj = new Ingredient();  //Skapar ingrediensobjekt och initiera det med de tre delarna för mängd, mått och namn.
                                       IngrediensObj.Amount = scores[0];
                                       IngrediensObj.Measure = scores[1];
                                       IngrediensObj.Name = scores[2];
-                      
-                                    //  List<Ingredient> listIngredients = new List<Ingredient>();
+                     
 
-
-                                      Recipe newIngredientInR = new Recipe(line);
-                                      newIngredientInR.Add(IngrediensObj);
-
-                                   //   Console.WriteLine("RUMPLEEE {0}",newIngredientInR.Ingredients);
-                                      
-
-                                    //   listIngredients.Add(IngrediensObj);  // lägger till ingrediensobjectet i en lista med ingredienser
-
-                                  // funkaar?!  listIngredients.Add(IngrediensObj); 
-
-                                        
-
-                               //     ReadOnlyCollection<string> readOnlyDinosaurs = new ReadOnlyCollection<string>(dinosaurs);
-                                      
-
-                                                                         
-                                    //Lägg till ingrediensen till receptets lista med ingredienser.
+                                      currentRecipe.Add(IngrediensObj);//Lägg till ingrediensen till receptets lista med ingredienser.
 
                                         break;
 
@@ -170,29 +158,25 @@ namespace _1DV402.S3
                             }
                         }
                         while (line != null); // avbryter loopen när det inte finns några mer rader med text
+
+                        listRecipes.Add(currentRecipe);
                     }
 
 
                 }
-                catch (Exception)
+                catch 
                 {
                     //**** FELMEDDELANDE**** //
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(" ╔══════════════════════════════════════╗ ");
                     Console.WriteLine(" ║       FEL! Ett fel inträffade        ║ ");
-                    Console.WriteLine(" ║        när recepten lästes in        ║ ");
+                    Console.WriteLine(" ║        när recepten lästes in!       ║ ");
                     Console.WriteLine(" ╚══════════════════════════════════════╝ ");
                     Console.ResetColor();
                 }
 
-                //**** skriver ut om det lyckats!**** //
-                Console.BackgroundColor = ConsoleColor.DarkCyan;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
-                Console.WriteLine(" ║         Recepten har lästs in        ║ ");
-                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
-                Console.ResetColor();
+
 
                 //**** skriver ut ord**** //
                 int hej = 0;
@@ -204,83 +188,29 @@ namespace _1DV402.S3
                 foreach (Ingredient ingrediensObj in newIngredientInR1.Ingredients)
                 {
                     Console.WriteLine("RUMPLEEE {0}", ingrediensObj);
-                }
-            */
-                return listRecipes;
-               
+                }*/
 
-
-            
-            /*
-
-
-        
-
-    */
-
-            /*1.  Skapa lista som kan innehålla referenser till receptobjekt.
-                   XXXXXX  2.  Öppna textfilen för läsning.
-                   XXXXXX  3.  Läs rad från textfilen tills det är slut på filen.
-                    XX  a.  Om det är en tom rad…
-                    i.  …fortsätt med att läsa in nästa rad.
-                    b.  Om det är en avdelning för nytt recept…
-                    i.  …sätt status till att nästa rad som läses in kommer att vara receptets namn.
-                    c.  …eller om det är avdelningen för ingredienser…
-                    i.  …sätt status till att kommande rader som läses in kommer att vara receptets 
-                    ingredienser.
-                    d.  …eller om det är avdelningen för instruktioner…
-                    i.  …sätt status till att kommande rader som läses in kommer att vara receptets 
-                    instruktioner.
-                    e.  …annars är det ett namn, en ingrediens eller en instruktion
-                    i.  Om status är satt att raden ska tolkas som ett recepts namn…
-                    1.  Skapa nytt receptobjekt med receptets namn.
-                    ii.  …eller om status är satt att raden ska tolkas som en ingrediens…
-                    1.  Dela upp raden i delar genom att använda metoden Split() i klassen 
-                    String. De olika delarna separeras åt med semikolon varför det 
-                    alltid ska bli tre delar.
-                    2.  Om antalet delar inte är tre…
-                    Inledande programmering med C# (1DV402)    9 (19) 
-                    a.  …är något fel varför ett undantag ska kastas.   
-                    3.  Skapa ett ingrediensobjekt och initiera det med de tre delarna för 
-                    mängd, mått och namn.
-                    4.  Lägg till ingrediensen till receptets lista med ingredienser.
-                    iii.   …eller om status är satt att raden ska tolkas som en instruktion…
-                    1.  Lägg till raden till receptets lista med instruktioner.
-                    iv.  …annars…
-                    1.  …är något fel varför ett undantag ska kastas.
-                    4.  Sortera listan med recept med avseende på receptens namn.
-                    5.  Returnera en referens till listan.
-        
+                return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe
+             
         }
 
         public RecipeRepository(string path)
         {
 
-            Path = _path;
+            Path = path;
             //  Konstruktorn ska initiera fältet _path, via egenskapen Path, så att det instansierade objektet innehåller 
             //en sökväg.
-        }*/
-
         }
+
+        public void Save(List<Recipe> recipes)
+        {
+            /*Metoden Save() ska spara de recept som skickas med som argument vid anrop av metoden på en textfil. 
+             Recepten ska spara enligt det format som beskrivs under rubriken ’Format på textfil med recept’*/
+        }
+  
     }
 }
 // ANVÄNDA LÄNKAR
 // http://stackoverflow.com/questions/12314555/how-to-remove-empty-line-when-reading-text-file-using-c-sharp
 // http://www.dreamincode.net/forums/topic/38937-working-with-enums-in-c%23/
 //http://www.dotnetperls.com/count-array
-
-
-/*Klassen Recipe beskriver ett recept med ett namn, en lista med ingredienser och en lista med 
-instruktioner. Strukturen Ingredient beskriver en ingrediens med mängd, mått och ingrediensens 
-namn.
-RecipeRepository ansvarar för allt som har med persistent lagring av recept, d.v.s. klassen har 
-metoder för att läsa recept från en textfil och skriva recept till en textfil. Klassen använder i samband 
-med inläsning av recept lämpligen den uppräkningsbara typen RecipeReadStatus för att hålla 
-ordningen på vilken typ av data som lästs in från textfilen.
-Då recept ska visas ska en instans av klassen RecipeView användas, som till skillnad mot klassen 
-Recipe vet hur ett, eller flera, recept skrivs ut i ett konsolfönster.
-Klassen Program har huvudansvaret för exekveringen av applikationen och erbjuder användaren med 
-hjälp av en meny ett antal kommandon som kan användas för att hantera recept.
- 
- 
- */
