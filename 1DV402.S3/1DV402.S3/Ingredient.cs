@@ -20,7 +20,7 @@ namespace _1DV402.S3
 
         public override string ToString() // Ska enkelt beskriva en ingrediens 
         {
-            return String.Format("Mängd: {0},  Mått: {1}, Namn på ingrediens: {2}", Amount, Measure, Name );    
+            return String.Format("{0}{1} {2}", Amount, Measure, Name );    
         }
 
     }   

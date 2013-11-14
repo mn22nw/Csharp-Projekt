@@ -8,19 +8,13 @@ using System.Collections.ObjectModel;
 
 namespace _1DV402.S3
 {
-    class Recipe : IComparable, IComparable<Recipe>
-
-        /*Klassen Recipe beskriver ett recept med ett namn, en lista med ingredienser och en lista med instruktioner. 
-                
-        Då recept ska visas ska en instans av klassen RecipeView användas, som till skillnad mot klassen 
-        Recipe vet hur ett, eller flera, recept skrivs ut i ett konsolfönster. */
+    class Recipe : IComparable, IComparable<Recipe> //Klassen Recipe beskriver ett recept med ett namn, en lista med ingredienser och en lista med instruktioner. 
 
     {
         private List<string> _direction = new List<string>();   // används för att representera ett recepts instruktioner.
         private List<Ingredient> _ingredients = new List<Ingredient>();   // används för att representera ett recepts ingredienser.
         private string _name; //används för att representera ett recepts namn
 
-   
        public ReadOnlyCollection<string> Directions //Publik egenskap av typen ReadOnlyCollection<string> som ger en ”read-only”-referens till fältet _directions. 
        {
            get { return new ReadOnlyCollection<string>(_direction); } //returnerar _direction
@@ -58,16 +52,14 @@ namespace _1DV402.S3
      /*  Metoderna CompareTo ska jämföra två objekt med avseende på fältet för receptets namn. 
       •  Refererar parametern till ett objekt vars namn ska sorteras efter det anropande objektets namn ska ett heltal mindre än 0 returneras.
       •  Refererar parametern till ett objekt vars namn ska sorteras före det anropande objektets namn ska ett heltal större än 0 returneras.
-      •  Refererar parametern till ett objekt ett objekt vars namn är samma som det anropande objektets namn ska heltalet 0 returneras.*/   
+      •  Refererar parametern till ett objekt ett objekt vars namn är samma som det anropande objektets namn ska heltalet 0 returneras.*/
 
-       public int CompareTo(object obj)
-       {
-          //Metoden CompareTo(object obj) används t.ex. av metoden Array.Sort() då instanser av typen Recipe ska sorteras
+       public int CompareTo(object obj) //används t.ex. av metoden Array.Sort() då instanser av typen Recipe ska sorteras
+       { 
            
            if (obj == null) // om parametern = null returneras ett heltal större än 0 
            { return 1; 
            }
-
 
            Recipe other = obj as Recipe; // om obj (parametern) inte är av typen Recipe så kastas ett undantag
            if (other == null)
@@ -75,28 +67,20 @@ namespace _1DV402.S3
 
            return Name.CompareTo(other.Name); 
        }
- 
-       /*    if (obj.GetType() != typeof(Recipe)) // om obj (parametern) inte är av typen Recipe så kastas ett undantag
-           { 
-               throw new ArgumentException("Value is not a number.");}
 
-               return Convert.ToInt32(obj); //Måste retourrurunera ;)
-            }*/
-
-        public int CompareTo(Recipe other)
-       {   
-            
-            
-            //Metoden CompareTo(Recipe other) används av metoden List.Sort() då instanser av typen Recipe ska sorteras
+       public int CompareTo(Recipe other) //används av metoden List.Sort() då instanser av typen Recipe ska sorteras
+       {
+           if (other == null) // om parametern = null returneras ett heltal större än 0 
+           {
+               return 1;
+           }
            return 5; //Måste retourrurunera ;)
        }
 
         // ------ KONSTRUKTORER ------ //
-       public Recipe(string name) //:this(name,0,0)
+       public Recipe(string name) //:this(name,0,0) ->funkade inte...
        {
            Name= name;
-           
-           //namnet på receptet JUUEE   ÅHÅ!  - anropa denna från RecipeRepository juue
        }
 
        public Recipe(string name, List<Ingredient> ingredients, List<string> directions)
@@ -106,8 +90,6 @@ namespace _1DV402.S3
            _ingredients = ingredients;
           
        }
-
-      // HUUUH?! RUMPLE BAJSAR?!     
 
                 //    StringBuilder[] array = new StringBuilder[1];
                 //array[0] = new StringBuilder();

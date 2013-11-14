@@ -154,8 +154,7 @@ namespace _1DV402.S3
         }
 
         private static Recipe GetRecipe(string header, List<Recipe> recipes) // presenterar en indexerad lista med samtliga receptens namn
-        {
-                  
+        {                  
             int index;
 
             do
@@ -187,23 +186,16 @@ namespace _1DV402.S3
                     {
                       return null;
                     }
-
-
-                    return recipes[index]; //   returnerar en referens till det recept som blivit valt
+                    return recipes[index-1]; //   returnerar en referens till det recept som blivit valt
                 } 
-                
-               
-                
 
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och 5. \n");
+                Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och {0}. \n", numberOfRecipies);
 
                 ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
 
             } while (true);
-
-            
         }
 
   private static void ViewRecipe(List<Recipe> recipes, bool viewAll = false)
@@ -220,25 +212,8 @@ namespace _1DV402.S3
                 showARecipe.Render(chosenRecipe); // Anropar metoden som visar 1 recept
             }
             ContinueOnKeyPressed();
-            
-
-            
-
-
-           
-
-           //   showARecipe.Render(listRecipes.Load()); // Load innehåller den sorterade listan
-
-
-      /* 
-       *ViewRecipe() anropar denna metod för att få reda på vilket recept som ska tas bort respektive visas.
-          
-          ViewRecipe kunna visa ett enskilt recept eller samtliga recept. Metoden har två 
-          parametrar. Den första parametern recipes är en referens till listan med referenser till recept. Den 
-          andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
-          Om ett recept ska visas ska metoden GetRecipe() anropas för att erhålla en referens till receptet. 
-          Oavsett om ett eller flera recept ska visas ska en instans av typen RecipeView sköta presentationen.
- */ }
+      // Den andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
+ }
     }
 }
 

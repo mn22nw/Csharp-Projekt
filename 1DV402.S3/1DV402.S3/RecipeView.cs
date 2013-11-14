@@ -16,31 +16,33 @@ namespace _1DV402.S3
         {
            
             foreach (Recipe a in recipes) 
-            {  
-                RenderHeader(a.Name);  
-                // här mäste det ligga koden som skriver ut hela recepten med detaljer etc!
+            {
+                Render(recipes);
             }
+          
           Console.ReadLine();
-
         }
 
        public void Render(Recipe recipe) // ska skriva ut receptet som skickades med som argument vid anropet av metoden
         {
-            //Här ska bara det recept som är valt skrivas ut//
             RenderHeader(recipe.Name);
-            // här mäste det ligga koden som skriver ut hela det valda receptet med detaljer etc!
+            int numberBefore = 1;
 
-            //**** skriver ut ord**** //
-            int hej = 0;
-            Console.WriteLine("ALLA ORD MED COMMATECNKNK!!!!!!");
-        //    foreach (string word in measures)
-        //    { Console.Write(" {0}", measures[hej++]); }
+            Console.WriteLine("\nIngredienser:");
+            Console.WriteLine("_____________________________________\n");
 
-            /*     Recipe newIngredientInR1 = new Recipe("hej");
-                 foreach (Ingredient ingrediensObj in newIngredientInR1.Ingredients)
-                 {
-                     Console.WriteLine("RUMPLEEE {0}", ingrediensObj);
-                 }*/
+            foreach (Ingredient a in recipe.Ingredients)
+            {
+                Console.Write("{0}\n", a);
+            }
+
+           Console.WriteLine("\nInstruktioner:");
+           Console.WriteLine("_____________________________________\n");
+
+            foreach (string a in recipe.Directions)
+            {
+                Console.WriteLine("<{0}>\n{1}", numberBefore++, a);
+            }
         }
 
         private void RenderHeader(string header)
@@ -51,10 +53,7 @@ namespace _1DV402.S3
             Console.WriteLine(" ╔══════════════════════════════════════╗ ");
             Console.WriteLine(String.Format("{0,-10}{1,10} {2,10}", " ║", header, "║ "));
             Console.WriteLine(" ╚══════════════════════════════════════╝ ");
-            
-            
             Console.ResetColor();
-
 
         }
     }

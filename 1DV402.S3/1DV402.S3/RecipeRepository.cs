@@ -9,10 +9,8 @@ namespace _1DV402.S3
 {
     class RecipeRepository
     {
-        /*  RecipeRepository ansvarar för allt som har med persistent lagring av recept, d.v.s. klassen har 
-               metoder för att läsa recept från en textfil och skriva recept till en textfil.
-               Klassen använder i samband med inläsning av recept lämpligen den uppräkningsbara typen RecipeReadStatus för att hålla 
-               ordningen på vilken typ av data som lästs in från textfilen.*/
+        /*     RecipeRepository ansvarar för allt som har med persistent lagring av recept, d.v.s. klassen har 
+               metoder för att läsa recept från en textfil och skriva recept till en textfil. */
 
         public enum RecipeReadStatus { Indefinite, New, Ingredient, Direction };
 
@@ -46,19 +44,13 @@ namespace _1DV402.S3
                 {
                     using (StreamReader reader = new StreamReader(Path)) // using öppnar/stänger filen automatiskt när man har använt den. 
                     {
-                        string line; // skapar en ny variabel string
-
-                        //   Den publika metoden Load() ska läsa in textfilen och tolka den för att skapa en lista med referenser 
-                        //    till Recipe-objekt som returneras.
+                        string line; // skapar en ny string-variabel
                         Recipe currentRecipe = null;
                    
                         do
                         {
                             line = reader.ReadLine(); // tilldelar variabeln line värdet för en avläst rad
                            if (line == null) { continue; }  // för att inte få Error-meddelandet att instance of object = null
-                                                       
-                              
-                           
 
                             if (line == String.Empty)  //fortsätter läsa in ifall det finns en tom rad
                             {
@@ -70,88 +62,60 @@ namespace _1DV402.S3
 
                                 if (line == "[Recept]")
                                 {
-                                    status = RecipeReadStatus.New;  //* RÄTT *//
+                                    status = RecipeReadStatus.New;  // Raden tolkas som ett nytt recept
                                     continue;
                                 }
 
                                 if (line == "[Ingredienser]")
                                 {
-
-                                    //    Då textfilen tolkas används lämpligen en instans av typen RecipeReadStatus så metoden vet hur den 
-                                    //    aktuella raden som lästs in ska tolkas.
-
-                                    //List<RecipeReadStatus> newSaveRecipeName = new List<RecipeReadStatus>();
-
-                                    //  RecipeReadStatus Ingredient = (RecipeReadStatus)System.Enum.Parse(typeof(RecipeReadStatus), "Ingredient");
-                                    // Enum.IsDefined(typeof(RecipeReadStatus), Ingredient);
-                                    // RecipeReadStatus ingredient = RecipeReadStatus.Ingredient;
-
-                                    status = RecipeReadStatus.Ingredient;  //* RÄTT *//
+                                    status = RecipeReadStatus.Ingredient; // Raden tolkas som en ingrediens
                                     continue;
                                 }
 
                                 if (line == "[Instruktioner]")
                                 {
-                                    Console.WriteLine("INSTRUKTIOOONER");
-                                    status = RecipeReadStatus.Direction;
+                                    status = RecipeReadStatus.Direction; // Raden tolkas som en instruktion
                                     continue; 
                                 }                             
-                            } //End of första if-sats
+                            }
+
                             else
                             {
-                                /*  List<Recipe> recipeTitle = new List<Recipe>();
-                                  recipeTitle.Add(new Recipe(nameofReci));
-                                  return recipeTitle;*/
-                              
-
-                           
-                               
-
                                 switch (status)
                                 {
+                                    case RecipeReadStatus.New ://  om status är satt till nytt recept 
 
-                                    case RecipeReadStatus.New ://  nytt recept 
-                                    
-                                             if(currentRecipe != null)
-                                             listRecipes.Add(currentRecipe);
-                                            // Skapa nytt receptobjekt med receptets namn
-                                            currentRecipe = new Recipe(line);
-                                            Console.WriteLine("TITELI \n{0}", currentRecipe.Name);
+                                        if (currentRecipe != null) //  för att den inte ska lägga till ett null object
+                                        
+                                            listRecipes.Add(currentRecipe);
+                                            currentRecipe = new Recipe(line); // Skapar nytt receptobjekt med receptets namn                                     
                                             break;
                                                                                
-                                    case RecipeReadStatus.Ingredient: //ingrediens
+                                    case RecipeReadStatus.Ingredient: // om status satt till ingrediens
                                       //   string[] scores = line.Split(new char[] { ';', ' ' },
                                       //    StringSplitOptions.RemoveEmptyEntries); // tar bort mellanslag
 
                                            
                                     string[] scores = line.Split(';');
-                                    int count = scores.Count(); //Räknar ut hur många 
-                                    Console.WriteLine("HUR MÅNGA!!!!! {0}", count);
-                                    if (count != 3)
+                                    int count = scores.Count(); //Räknar ut hur många delar det är per rad
+                                    if (count != 3) // om det är 3st kastas exeption (som inte verkar hanteras??)
                                     {
                                         throw new ArgumentException("Fel antal ingredienser!!");
                                     }
-                                   
+                            
                                     measures.AddRange(scores); 
  
-                                      Ingredient IngrediensObj = new Ingredient();  //Skapar ingrediensobjekt och initiera det med de tre delarna för mängd, mått och namn.
-                                      IngrediensObj.Amount = scores[0];
-                                      IngrediensObj.Measure = scores[1];
-                                      IngrediensObj.Name = scores[2];
-                     
+                                      Ingredient ingrediensObj = new Ingredient();  //Skapar ingrediensobjekt och initiera det med de tre delarna för mängd, mått och namn.
+                                      ingrediensObj.Amount = scores[0];
+                                      ingrediensObj.Measure = scores[1];
+                                      ingrediensObj.Name = scores[2];
+ 
+                                      currentRecipe.Add(ingrediensObj);//Lägger till ingrediensen till receptets lista med ingredienser. (Anropar Add-metoden som tar en ingrediens!)
+                                      break;
+                                 
+                                    case RecipeReadStatus.Direction: // om status satt till instruktion
 
-                                      currentRecipe.Add(IngrediensObj);//Lägg till ingrediensen till receptets lista med ingredienser.
-
-                                        break;
-
-                                   
-                                    case RecipeReadStatus.Direction: //instruktion
-
-                                        //eller om status är satt att raden ska tolkas som en instruktion… 
-                                        //1.  Lägg till raden till receptets lista med instruktioner.
-
-                                        Console.Write(status);
-                                        Console.WriteLine(line);
+                                      currentRecipe.Add(line);  // Lägger till raden till receptets lista med instruktioner.(Anropar Add-metoden som tar en string!)
                                         break;
                                 }
                                 continue;
@@ -161,8 +125,6 @@ namespace _1DV402.S3
 
                         listRecipes.Add(currentRecipe);
                     }
-
-
                 }
                 catch 
                 {
@@ -175,16 +137,12 @@ namespace _1DV402.S3
                     Console.WriteLine(" ╚══════════════════════════════════════╝ ");
                     Console.ResetColor();
                 }
-                    return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe
-             
+                    return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe            
         }
 
-        public RecipeRepository(string path)
+        public RecipeRepository(string path) // initierar fältet _path, via egenskapen Path, så att det instansierade objektet innehåller en sökväg.
         {
-
             Path = path;
-            //  Konstruktorn ska initiera fältet _path, via egenskapen Path, så att det instansierade objektet innehåller 
-            //en sökväg.
         }
 
         public void Save(List<Recipe> recipes)
@@ -192,7 +150,6 @@ namespace _1DV402.S3
             /*Metoden Save() ska spara de recept som skickas med som argument vid anrop av metoden på en textfil. 
              Recepten ska spara enligt det format som beskrivs under rubriken ’Format på textfil med recept’*/
         }
-  
     }
 }
 // ANVÄNDA LÄNKAR
