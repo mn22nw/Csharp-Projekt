@@ -18,8 +18,11 @@ namespace _1DV402.S3
 
             do
             {
+                
+                RecipeRepository listRecipes = new RecipeRepository("recipes.txt");
+                
                 switch (GetMenuChoice())
-                {
+                {       
                     case 0: // Programmet ska avslutas
                         Console.BackgroundColor = ConsoleColor.Red;
                         Console.ForegroundColor = ConsoleColor.White;
@@ -33,12 +36,13 @@ namespace _1DV402.S3
                     case 2:   // ska kunna spara recept
                         break;
                     case 3:  // ska kunna ta bort recept
+                      //  GetRecipe( );
                         break;
-                    case 4: 
-                        RecipeView showARecipe = new RecipeView();
-                        RecipeRepository listRecipes = new RecipeRepository("recipes.txt");
+                    case 4:
+                        bool viewAll = false;
+                        ViewRecipe( listRecipes.Load(), viewAll); 
+                       
 
-                        showARecipe.Render(listRecipes.Load()); // Load innehåller den sorterade listan
 
                       //  Render(Resiperepostgs
                     // Här ska en lista med samtliga recepts namn presenteras varefter användaren ska kunna välja det recept som ska visas.
@@ -150,37 +154,46 @@ namespace _1DV402.S3
         }
 
         private static Recipe GetRecipe(string header, List<Recipe> recipes) // presenterar en indexerad lista med samtliga receptens namn
-        {  
-             /* Användaren ska bara kunna välja bland de index som är knutna till recept.    --HUH?
-             *
-             Värdet 0 ska användaren kunna välja för att avbryta förfarandet att välja ett recept. 
-              I så fall ska metoden returnera värdet null.*/
+        {
                   
             int index;
+
             do
             {
                 Console.Clear();
                 Console.BackgroundColor = ConsoleColor.DarkCyan;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(" ╔══════════════════════════════════════╗ ");
-                Console.WriteLine(" ║         Välj recept att visa         ║ ");
+                Console.WriteLine(" ║         Välj recept att {0}         ║ ", header);
                 Console.WriteLine(" ╚══════════════════════════════════════╝ ");
                 Console.ResetColor();
-                Console.WriteLine(" 0. Avbryt.");
+                Console.WriteLine("\n 0. Avbryt.");
                 Console.WriteLine("\n -----------------------------------------\n");
-                
 
-                Console.WriteLine(" Ange menyval [0-5:]");
-               
-                int choiceR;
-                if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
-                { choiceR = index;
-                
-                if (choiceR == 0)
+                int numberBefore = 1;
+                int numberOfRecipies = 0;
+                foreach (Recipe a in recipes)
                 {
-                  return null;
-                 }
+                  Console.WriteLine("{0}. {1}", numberBefore++, a.Name);
+                  numberOfRecipies += 1;
                 }
+
+                Console.WriteLine(" Ange menyval [0-{0}:]", numberOfRecipies);
+
+                if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= numberOfRecipies) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
+                {
+
+                    if (index == 0)
+                    {
+                      return null;
+                    }
+
+
+                    return recipes[index]; //   returnerar en referens till det recept som blivit valt
+                } 
+                
+               
+                
 
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
@@ -190,14 +203,35 @@ namespace _1DV402.S3
 
             } while (true);
 
-            return null; // vet inte vad som ska va här!
+            
         }
 
   private static void ViewRecipe(List<Recipe> recipes, bool viewAll = false)
+        {
+            RecipeRepository viewR = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
+            Recipe chosenRecipe = GetRecipe("visa", viewR.Load()); //anropar medoden som visar vilka recept man kan välja att visa
+            RecipeView showARecipe = new RecipeView();
+            if (viewAll == true)
+            {
+                showARecipe.Render(recipes);
+            }
+            else
+            {
+                showARecipe.Render(chosenRecipe); // Anropar metoden som visar 1 recept
+            }
+            ContinueOnKeyPressed();
+            
 
-          {/* GetRecipe ska returnera en referens till det recept som blivit och 
-            *ViewRecipe() anropar denna metod för att få reda på vilket 
-              recept som ska tas bort respektive visas.
+            
+
+
+           
+
+           //   showARecipe.Render(listRecipes.Load()); // Load innehåller den sorterade listan
+
+
+      /* 
+       *ViewRecipe() anropar denna metod för att få reda på vilket recept som ska tas bort respektive visas.
           
           ViewRecipe kunna visa ett enskilt recept eller samtliga recept. Metoden har två 
           parametrar. Den första parametern recipes är en referens till listan med referenser till recept. Den 

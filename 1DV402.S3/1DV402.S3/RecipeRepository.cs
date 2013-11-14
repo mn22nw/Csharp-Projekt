@@ -58,7 +58,7 @@ namespace _1DV402.S3
                            if (line == null) { continue; }  // för att inte få Error-meddelandet att instance of object = null
                                                        
                               
-                            // Console.WriteLine(measures);
+                           
 
                             if (line == String.Empty)  //fortsätter läsa in ifall det finns en tom rad
                             {
@@ -104,7 +104,7 @@ namespace _1DV402.S3
                                   return recipeTitle;*/
                               
 
-                            //    Console.WriteLine("MEASURES {0}",measures[1]);    -INDEX OUT OF RANGE??
+                           
                                
 
                                 switch (status)
@@ -175,22 +175,7 @@ namespace _1DV402.S3
                     Console.WriteLine(" ╚══════════════════════════════════════╝ ");
                     Console.ResetColor();
                 }
-
-
-
-                //**** skriver ut ord**** //
-                int hej = 0;
-                Console.WriteLine("ALLA ORD MED COMMATECNKNK!!!!!!");
-                foreach (string word in measures)
-                { Console.Write(" {0}", measures[hej++]); }
-
-           /*     Recipe newIngredientInR1 = new Recipe("hej");
-                foreach (Ingredient ingrediensObj in newIngredientInR1.Ingredients)
-                {
-                    Console.WriteLine("RUMPLEEE {0}", ingrediensObj);
-                }*/
-
-                return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe
+                    return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe
              
         }
 
