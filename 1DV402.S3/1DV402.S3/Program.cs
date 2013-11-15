@@ -18,11 +18,11 @@ namespace _1DV402.S3
 
             do
             {
-                
+
                 RecipeRepository listRecipes = new RecipeRepository("recipes.txt");
-                
+
                 switch (GetMenuChoice())
-                {       
+                {
                     case 0: // Programmet ska avslutas
                         Console.BackgroundColor = ConsoleColor.Red;
                         Console.ForegroundColor = ConsoleColor.White;
@@ -34,25 +34,20 @@ namespace _1DV402.S3
                         LoadRecipes();
                         break;
                     case 2:   // ska kunna spara recept
+                        SaveRecipes(listRecipes.Load());
                         break;
                     case 3:  // ska kunna ta bort recept
-                      //  GetRecipe( );
+                        //  GetRecipe( );
                         break;
                     case 4:
                         bool viewAll = false;
-                        ViewRecipe( listRecipes.Load(), viewAll); 
-                       
-
-
-                      //  Render(Resiperepostgs
-                    // Här ska en lista med samtliga recepts namn presenteras varefter användaren ska kunna välja det recept som ska visas.
-                   
+                        ViewRecipe(listRecipes.Load(), viewAll);
                         break;
                     case 5:  // Ska visa ALLA recepten sorterade efter receptens namn.
-                        //För att visa recept måste det finns recept att visa. Saknas recept ska ett meddelande visas som informerar 
-                        //användaren att det inte finns några recept att visa
+                        ViewRecipe(listRecipes.Load(), viewAll = true);
                         break;
-
+                    //För att visa recept måste det finns recept att visa. Saknas recept ska ett meddelande visas som informerar 
+                    //användaren att det inte finns några recept att visa
                 } // end switch
 
             } while (true);
@@ -65,15 +60,14 @@ namespace _1DV402.S3
 
         private static List<Recipe> LoadRecipes()
         {
-       /*   Metoden LoadRecipes() läser in recepten från en textfil genom att använda en instans av klassen RecipeRepsoitory.
-          Då recepten lästs in utan problem ska ett rättmeddelande visas och en referens till ett List-objekt innehållande referenser till
-          Recipe-objekt ska returneras.
-          Inträffar ett fel i samband med att recepten läses in ska ett felmeddelande visas och metoden returnera värdet null.*/
+            /*   Metoden LoadRecipes() läser in recepten från en textfil genom att använda en instans av klassen RecipeRepsoitory.
+               Då recepten lästs in utan problem ska ett rättmeddelande visas och en referens till ett List-objekt innehållande referenser till
+               Recipe-objekt ska returneras..*/
+            List<Recipe> listToReturn = new List<Recipe>();
             try
             {
                 RecipeRepository repository = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
-                repository.Load(); // Anropar metoden Load i RecipeRepository, som läser in .txt filen
-                ContinueOnKeyPressed();
+                listToReturn = repository.Load(); // Anropar metoden Load i RecipeRepository, som läser in .txt filen
             }
             catch
             {
@@ -95,8 +89,9 @@ namespace _1DV402.S3
             Console.WriteLine(" ║         Recepten har lästs in        ║ ");
             Console.WriteLine(" ╚══════════════════════════════════════╝ ");
             Console.ResetColor();
+            ContinueOnKeyPressed();
 
-            return null;
+            return listToReturn;
         }
 
         public static void ViewErrorMessage(string message)
@@ -142,7 +137,7 @@ namespace _1DV402.S3
                 Console.WriteLine(" Ange menyval [0-5:]");
 
                 if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index <= 5) // Om TryParse lyckas tolka Console.Readline ger den true och då körs "return index"; , out får värdet av inputen. 
-                { return index; }
+                { Console.Clear(); return index; }
 
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
@@ -154,9 +149,8 @@ namespace _1DV402.S3
         }
 
         private static Recipe GetRecipe(string header, List<Recipe> recipes) // presenterar en indexerad lista med samtliga receptens namn
-        {                  
+        {
             int index;
-
             do
             {
                 Console.Clear();
@@ -171,10 +165,11 @@ namespace _1DV402.S3
 
                 int numberBefore = 1;
                 int numberOfRecipies = 0;
+
                 foreach (Recipe a in recipes)
                 {
-                  Console.WriteLine("{0}. {1}", numberBefore++, a.Name);
-                  numberOfRecipies += 1;
+                    Console.WriteLine("{0}. {1}", numberBefore++, a.Name);
+                    numberOfRecipies += 1;
                 }
 
                 Console.WriteLine(" Ange menyval [0-{0}:]", numberOfRecipies);
@@ -184,10 +179,11 @@ namespace _1DV402.S3
 
                     if (index == 0)
                     {
-                      return null;
+                        return null;
+
                     }
-                    return recipes[index-1]; //   returnerar en referens till det recept som blivit valt
-                } 
+                    return recipes[index - 1]; //   returnerar en referens till det recept som blivit valt
+                }
 
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
@@ -198,23 +194,39 @@ namespace _1DV402.S3
             } while (true);
         }
 
-  private static void ViewRecipe(List<Recipe> recipes, bool viewAll = false)
+        private static void ViewRecipe(List<Recipe> recipes, bool viewAll) // Den andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
         {
             RecipeRepository viewR = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
-            Recipe chosenRecipe = GetRecipe("visa", viewR.Load()); //anropar medoden som visar vilka recept man kan välja att visa
+
             RecipeView showARecipe = new RecipeView();
             if (viewAll == true)
             {
                 showARecipe.Render(recipes);
+                ContinueOnKeyPressed();
             }
             else
             {
-                showARecipe.Render(chosenRecipe); // Anropar metoden som visar 1 recept
+                Recipe chosenRecipe = GetRecipe("visa", viewR.Load()); //anropar medoden som visar vilka recept man kan välja att visa
+                if (chosenRecipe != null)  // för att det inte ska köra ett nullobjekt
+                    showARecipe.Render(chosenRecipe); // Anropar metoden som visar 1 recept
             }
-            ContinueOnKeyPressed();
-      // Den andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
- }
+        }
+
+        private static void SaveRecipes(List<Recipe> recipes)
+        {
+            RecipeRepository listofRecipes = new RecipeRepository("recipes1.txt");
+
+            listofRecipes.Save(recipes);
+
+            /*  Metoden SaveRecipes() sparar recepten på en textfil genom att använda en instans av klassen RecipeRepsoitory.
+                Finns det inga recept att spara ska användaren informeras med ett meddelande. Finns det recept ska 
+                alla recept sparas och ett rättmeddelande visas om allt gått bra. Inträffar ett fel i samband med att 
+                recepten sparas ska ett felmeddelande visas.*/
+
+        }
+
     }
 }
+
 
 

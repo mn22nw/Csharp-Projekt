@@ -8,23 +8,18 @@ namespace _1DV402.S3
 {
     class RecipeView
     {
-        //En instans av klassen används för att skriva ut recept i ett konsolfönster
-
-      /* ----  Metoderna Render() ska överlagras, d.v.s. det ska finnas två metoder med samma namn men med olika parameterlistor ----*/
-
         public void Render(IList<Recipe> recipes) //ska skriva ut samtliga recept i samlingen som skickades med som argument vid anropet av metoden
         {
            
             foreach (Recipe a in recipes) 
             {
-                Render(recipes);
-            }
-          
-          Console.ReadLine();
+                Render(a);
+            }         
         }
 
        public void Render(Recipe recipe) // ska skriva ut receptet som skickades med som argument vid anropet av metoden
         {
+            Console.Clear();
             RenderHeader(recipe.Name);
             int numberBefore = 1;
 
@@ -54,7 +49,6 @@ namespace _1DV402.S3
             Console.WriteLine(String.Format("{0,-10}{1,10} {2,10}", " ║", header, "║ "));
             Console.WriteLine(" ╚══════════════════════════════════════╝ ");
             Console.ResetColor();
-
         }
     }
 }

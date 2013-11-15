@@ -4,3 +4,9 @@ C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\SLUTUPPGIFT\1DV402.S3\1
 C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\SLUTUPPGIFT\1DV402.S3\1DV402.S3\bin\Debug\1DV402.S3.pdb
 C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\SLUTUPPGIFT\1DV402.S3\1DV402.S3\obj\Debug\1DV402.S3.exe
 C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\SLUTUPPGIFT\1DV402.S3\1DV402.S3\obj\Debug\1DV402.S3.pdb
+C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\Csharp-Projekt\1DV402.S3\1DV402.S3\bin\Debug\1DV402.S3.exe.config
+C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\Csharp-Projekt\1DV402.S3\1DV402.S3\obj\Debug\1DV402.S3.exe
+C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\Csharp-Projekt\1DV402.S3\1DV402.S3\obj\Debug\1DV402.S3.pdb
+C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\Csharp-Projekt\1DV402.S3\1DV402.S3\bin\Debug\1DV402.S3.exe
+C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\Csharp-Projekt\1DV402.S3\1DV402.S3\bin\Debug\1DV402.S3.pdb
+C:\Users\Mia\Dropbox\STUDIER H13\C#\Laborationsuppgifter\Csharp-Projekt\1DV402.S3\1DV402.S3\obj\Debug\1DV402.S3.csprojResolveAssemblyReference.cache

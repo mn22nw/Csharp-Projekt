@@ -31,13 +31,7 @@ namespace _1DV402.S3
 
         public List<Recipe> Load() // public List<Recipe> Load()
         {
-            List<string> measures = new List<string>();  // skapar en lista som kan lagra informationen mellan skiljetecknen
             List<Recipe> listRecipes = new List<Recipe>(); // skapar en lista för recept
-          // listRecipes.Add(Ingredient); 
-
-           ///////// List<Ingredient> listIngredients = new List<Ingredient>();
-            
-
             RecipeReadStatus status = new RecipeReadStatus(); // skapar en ny instans av enum RecipeReadStatus 
             
                 try
@@ -92,18 +86,13 @@ namespace _1DV402.S3
                                             break;
                                                                                
                                     case RecipeReadStatus.Ingredient: // om status satt till ingrediens
-                                      //   string[] scores = line.Split(new char[] { ';', ' ' },
-                                      //    StringSplitOptions.RemoveEmptyEntries); // tar bort mellanslag
-
-                                           
+              
                                     string[] scores = line.Split(';');
                                     int count = scores.Count(); //Räknar ut hur många delar det är per rad
                                     if (count != 3) // om det är 3st kastas exeption (som inte verkar hanteras??)
                                     {
                                         throw new ArgumentException("Fel antal ingredienser!!");
                                     }
-                            
-                                    measures.AddRange(scores); 
  
                                       Ingredient ingrediensObj = new Ingredient();  //Skapar ingrediensobjekt och initiera det med de tre delarna för mängd, mått och namn.
                                       ingrediensObj.Amount = scores[0];
@@ -147,8 +136,23 @@ namespace _1DV402.S3
 
         public void Save(List<Recipe> recipes)
         {
-            /*Metoden Save() ska spara de recept som skickas med som argument vid anrop av metoden på en textfil. 
-             Recepten ska spara enligt det format som beskrivs under rubriken ’Format på textfil med recept’*/
+            using (StreamWriter writer = new StreamWriter(Path, true))
+            {
+                foreach (Recipe a in recipes)  // för varje receptObject
+                {
+                    writer.WriteLine("[Recept]");
+                    writer.WriteLine(a.Name);
+                    
+                    writer.WriteLine("[Ingredienser]");
+                    foreach (Ingredient ingr in a.Ingredients)
+                    { writer.WriteLine(ingr); }
+
+                    writer.WriteLine("[Instruktioner]");
+                    foreach (string descr in a.Directions)
+                    { writer.WriteLine(descr); }
+                }
+            }
+           
         }
     }
 }
