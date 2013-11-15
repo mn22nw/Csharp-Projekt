@@ -10,15 +10,9 @@ namespace _1DV402.S3
     class Program
     {
         static void Main(string[] args)
-        {   /*Metoden Main ska anropa metoden GetMenuChoice() för att visa en meny. Så länge som användaren 
-            inte väljer att avsluta applikationen, genom att välja menyalternativet 0, ska menyn visas på nytt efter 
-            att något av övriga menykommandon utförts.
-            Beroende på vilket menykommando användaren väljer ska metoderna LoadRecipes(), 
-            SaveRecipes(), CreateRecipe(), DeleteRecipe() eller ViewRecipe() anropas.*/
-
+        {   
             do
             {
-
                 RecipeRepository listRecipes = new RecipeRepository("recipes.txt");
 
                 switch (GetMenuChoice())
@@ -34,10 +28,11 @@ namespace _1DV402.S3
                         LoadRecipes();
                         break;
                     case 2:   // ska kunna spara recept
-                        SaveRecipes(listRecipes.Load());
+                        try { SaveRecipes(listRecipes.Load()); }
+                        catch {Console.WriteLine("hiehi");Console.ReadLine();}
                         break;
                     case 3:  // ska kunna ta bort recept
-                        //  GetRecipe( );
+                        DeleteRecipes(listRecipes.Load());
                         break;
                     case 4:
                         bool viewAll = false;
@@ -57,51 +52,7 @@ namespace _1DV402.S3
 
         }
 
-
-        private static List<Recipe> LoadRecipes()
-        {
-            /*   Metoden LoadRecipes() läser in recepten från en textfil genom att använda en instans av klassen RecipeRepsoitory.
-               Då recepten lästs in utan problem ska ett rättmeddelande visas och en referens till ett List-objekt innehållande referenser till
-               Recipe-objekt ska returneras..*/
-            List<Recipe> listToReturn = new List<Recipe>();
-            try
-            {
-                RecipeRepository repository = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
-                listToReturn = repository.Load(); // Anropar metoden Load i RecipeRepository, som läser in .txt filen
-            }
-            catch
-            {
-                //**** FELMEDDELANDE**** //
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
-                Console.WriteLine(" ║       FEL! Ett fel inträffade        ║ ");
-                Console.WriteLine(" ║        när recepten lästes in        ║ ");
-                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
-                Console.ResetColor();
-                return null;
-            }
-
-            //**** skriver ut om det lyckats!**** //
-            Console.BackgroundColor = ConsoleColor.DarkCyan;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(" ╔══════════════════════════════════════╗ ");
-            Console.WriteLine(" ║         Recepten har lästs in        ║ ");
-            Console.WriteLine(" ╚══════════════════════════════════════╝ ");
-            Console.ResetColor();
-            ContinueOnKeyPressed();
-
-            return listToReturn;
-        }
-
-        public static void ViewErrorMessage(string message)
-        {
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-        public static void ContinueOnKeyPressed()
+        private static void ContinueOnKeyPressed()
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.DarkBlue;
@@ -111,6 +62,30 @@ namespace _1DV402.S3
             Console.ReadKey(true);
             Console.Clear();
             Console.CursorVisible = true;
+        }
+        private static void DeleteRecipes(List<Recipe> recipes) {
+            
+            RecipeRepository deleteR = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
+
+
+            Recipe chosenRecipe = GetRecipe("ta bort", deleteR.Load()); //anropar medoden som visar vilka recept man kan välja att ta bort
+
+                if (chosenRecipe != null)
+                {  // för att det inte ska köra ett nullobjekt
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine("Är du säker på att du vill ta bort {0}", chosenRecipe.Name);
+                    Console.ReadKey(true);
+                    recipes.Remove(chosenRecipe); // tar bort det valda receptet
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n ╔══════════════════════════════════════╗ ");
+                    Console.WriteLine(" ║       Recepten har tagits bort       ║ ");
+                    Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                    Console.ResetColor();
+                    ContinueOnKeyPressed();  //SKA KUNNA FORTSÄTTA TA BORT RECEPT JUUE
+                    
+                }
         }
 
         private static int GetMenuChoice()
@@ -189,10 +164,92 @@ namespace _1DV402.S3
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och {0}. \n", numberOfRecipies);
 
-             ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
+                ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
 
             } while (true);
         }
+        private static List<Recipe> LoadRecipes()
+        {
+            List<Recipe> listToReturn = new List<Recipe>();
+            try
+            {
+                RecipeRepository repository = new RecipeRepository("recipes.txt");  // Ny instans av RecipeRepository
+                listToReturn = repository.Load(); // Anropar metoden Load i RecipeRepository, som läser in .txt filen              
+            }
+            catch
+            {
+                //**** FELMEDDELANDE**** //
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                Console.WriteLine(" ║       FEL! Ett fel inträffade        ║ ");
+                Console.WriteLine(" ║        när recepten lästes in        ║ ");
+                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                Console.ResetColor();
+                return null;
+            }
+
+            //**** skriver ut om det lyckats!**** //
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+            Console.WriteLine(" ║         Recepten har lästs in        ║ ");
+            Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+            Console.ResetColor();
+            ContinueOnKeyPressed();
+
+            return listToReturn;
+        }
+
+        public static void ViewErrorMessage(string message)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        private static void SaveRecipes(List<Recipe> recipes)
+        {
+
+            try
+            {
+                RecipeRepository listofRecipes = new RecipeRepository("recipes1.txt");
+
+                if (recipes == null)
+                {
+                    Console.WriteLine("TOMT VARE HÄR!");
+                }
+                listofRecipes.Save(recipes);
+                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                Console.WriteLine(" ║         Recepten har sparats         ║ ");
+                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                Console.ResetColor();
+            }
+
+            catch
+            {
+                //**** FELMEDDELANDE**** //
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" ╔══════════════════════════════════════╗ ");
+                Console.WriteLine(" ║     FEL! Ett fel inträffade då       ║ ");
+                Console.WriteLine(" ║       recepten skulle sparas.        ║ ");
+                Console.WriteLine(" ╚══════════════════════════════════════╝ ");
+                Console.ResetColor();
+            }
+            ContinueOnKeyPressed();
+
+
+            /*  Metoden SaveRecipes() sparar recepten på en textfil genom att använda en instans av klassen RecipeRepsoitory.
+                Finns det inga recept att spara ska användaren informeras med ett meddelande. Finns det recept ska 
+                alla recept sparas och ett rättmeddelande visas om allt gått bra. Inträffar ett fel i samband med att 
+                recepten sparas ska ett felmeddelande visas.*/
+
+        }
+      
 
         private static void ViewRecipe(List<Recipe> recipes, bool viewAll) // Den andra parametern viewAll, med standardvärdet false, bestämmer om ett eller flera recept ska visas.
         {
@@ -214,23 +271,7 @@ namespace _1DV402.S3
             }
         }
 
-        private static void SaveRecipes(List<Recipe> recipes)
-        {
-            RecipeRepository listofRecipes = new RecipeRepository("recipes1.txt");
-
-            if (recipes != null)
-            {
-                Console.WriteLine("TOMT VARE HÄR!");
-            }
-
-            listofRecipes.Save(recipes);
-
-            /*  Metoden SaveRecipes() sparar recepten på en textfil genom att använda en instans av klassen RecipeRepsoitory.
-                Finns det inga recept att spara ska användaren informeras med ett meddelande. Finns det recept ska 
-                alla recept sparas och ett rättmeddelande visas om allt gått bra. Inträffar ett fel i samband med att 
-                recepten sparas ska ett felmeddelande visas.*/
-
-        }
+      
 
     }
 }

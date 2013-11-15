@@ -44,7 +44,10 @@ namespace _1DV402.S3
                         do
                         {
                             line = reader.ReadLine(); // tilldelar variabeln line värdet för en avläst rad
-                           if (line == null) { continue; }  // för att inte få Error-meddelandet att instance of object = null
+                            if (line == null) {
+                            continue;                           
+                             
+                            }  // för att inte få Error-meddelandet att instance of object = null
 
                             if (line == String.Empty)  //fortsätter läsa in ifall det finns en tom rad
                             {
@@ -117,16 +120,10 @@ namespace _1DV402.S3
                 }
                 catch 
                 {
-                    //**** FELMEDDELANDE**** //
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(" ╔══════════════════════════════════════╗ ");
-                    Console.WriteLine(" ║       FEL! Ett fel inträffade        ║ ");
-                    Console.WriteLine(" ║        när recepten lästes in!       ║ ");
-                    Console.WriteLine(" ╚══════════════════════════════════════╝ ");
-                    Console.ResetColor();
+                    throw new ArgumentException("Fel! Ett fel inträffade när recepten lästes in!"); 
                 }
-                    return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe            
+
+                return listRecipes.OrderBy(row => row.Name).ToList(); // sorterar raderna efter namn på Recipe            
         }
 
         public RecipeRepository(string path) // initierar fältet _path, via egenskapen Path, så att det instansierade objektet innehåller en sökväg.

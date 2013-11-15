@@ -9,8 +9,7 @@ namespace _1DV402.S3
     class RecipeView
     {
         public void Render(IList<Recipe> recipes) //ska skriva ut samtliga recept i samlingen som skickades med som argument vid anropet av metoden
-        {
-           
+        {          
             foreach (Recipe a in recipes) 
             {
                 Render(a);
