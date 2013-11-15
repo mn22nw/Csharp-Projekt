@@ -9,9 +9,6 @@ namespace _1DV402.S3
 {
     class RecipeRepository
     {
-        /*     RecipeRepository ansvarar för allt som har med persistent lagring av recept, d.v.s. klassen har 
-               metoder för att läsa recept från en textfil och skriva recept till en textfil. */
-
         public enum RecipeReadStatus { Indefinite, New, Ingredient, Direction };
 
         private string _path = "recipes.txt"; // Privat fält av typen string innehållande sökvägen till den fil en instans av RecipeRepository arbetar mot
@@ -56,7 +53,6 @@ namespace _1DV402.S3
 
                             if (line == "[Recept]" || line == "[Ingredienser]" || line == "[Instruktioner]")
                             {
-
                                 if (line == "[Recept]")
                                 {
                                     status = RecipeReadStatus.New;  // Raden tolkas som ett nytt recept
@@ -106,15 +102,13 @@ namespace _1DV402.S3
                                       break;
                                  
                                     case RecipeReadStatus.Direction: // om status satt till instruktion
-
-                                      currentRecipe.Add(line);  // Lägger till raden till receptets lista med instruktioner.(Anropar Add-metoden som tar en string!)
-                                        break;
+                                    currentRecipe.Add(line);  // Lägger till raden till receptets lista med instruktioner.(Anropar Add-metoden som tar en string!)
+                                    break;
                                 }
                                 continue;
                             }
                         }
                         while (line != null); // avbryter loopen när det inte finns några mer rader med text
-
                         listRecipes.Add(currentRecipe);
                     }
                 }
@@ -148,8 +142,7 @@ namespace _1DV402.S3
                     foreach (string descr in a.Directions)
                     { writer.WriteLine(descr); }
                 }
-            }
-           
+            }          
         }
     }
 }

@@ -47,7 +47,6 @@ namespace _1DV402.S3
        {
            _direction.Add(direction);
        }
-
              //----- CompareTo -----//   
      /*  Metoderna CompareTo ska jämföra två objekt med avseende på fältet för receptets namn. 
       •  Refererar parametern till ett objekt vars namn ska sorteras efter det anropande objektets namn ska ett heltal mindre än 0 returneras.
@@ -87,13 +86,8 @@ namespace _1DV402.S3
        {
            Name = name;
            _direction = directions;
-           _ingredients = ingredients;
-          
+           _ingredients = ingredients;         
        }
-
-                //    StringBuilder[] array = new StringBuilder[1];
-                //array[0] = new StringBuilder();
-                //var read = new ReadOnlyCollection<StringBuilder>(array);
     }
 }
 

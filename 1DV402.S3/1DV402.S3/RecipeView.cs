@@ -9,7 +9,7 @@ namespace _1DV402.S3
     class RecipeView
     {
         public void Render(IList<Recipe> recipes) //ska skriva ut samtliga recept i samlingen som skickades med som argument vid anropet av metoden
-        {          
+        {                    
             foreach (Recipe a in recipes) 
             {
                 Render(a);
@@ -23,15 +23,15 @@ namespace _1DV402.S3
             int numberBefore = 1;
 
             Console.WriteLine("\nIngredienser:");
-            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine("═══════════════════════════════════════\n");
 
             foreach (Ingredient a in recipe.Ingredients)
             {
                 Console.Write("{0}\n", a);
             }
 
-           Console.WriteLine("\nInstruktioner:");
-           Console.WriteLine("_____________________________________\n");
+           Console.WriteLine("\nGör såhär:");
+           Console.WriteLine("═══════════════════════════════════════\n");
 
             foreach (string a in recipe.Directions)
             {
