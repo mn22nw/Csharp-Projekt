@@ -180,8 +180,8 @@ namespace _1DV402.S3
                     if (index == 0)
                     {
                         return null;
-
                     }
+                    Console.Clear();
                     return recipes[index - 1]; //   returnerar en referens till det recept som blivit valt
                 }
 
@@ -189,7 +189,7 @@ namespace _1DV402.S3
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n FEL! Ange ett nummer mellan 0 och {0}. \n", numberOfRecipies);
 
-                ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
+             ContinueOnKeyPressed(); //fortsätter man trycker på en tangent
 
             } while (true);
         }
@@ -207,14 +207,21 @@ namespace _1DV402.S3
             else
             {
                 Recipe chosenRecipe = GetRecipe("visa", viewR.Load()); //anropar medoden som visar vilka recept man kan välja att visa
-                if (chosenRecipe != null)  // för att det inte ska köra ett nullobjekt
-                    showARecipe.Render(chosenRecipe); // Anropar metoden som visar 1 recept
+                
+                if (chosenRecipe != null){  // för att det inte ska köra ett nullobjekt
+                showARecipe.Render(chosenRecipe); // Anropar metoden som visar 1 recept
+                ContinueOnKeyPressed();}
             }
         }
 
         private static void SaveRecipes(List<Recipe> recipes)
         {
             RecipeRepository listofRecipes = new RecipeRepository("recipes1.txt");
+
+            if (recipes != null)
+            {
+                Console.WriteLine("TOMT VARE HÄR!");
+            }
 
             listofRecipes.Save(recipes);
 

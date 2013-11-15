@@ -19,7 +19,7 @@ namespace _1DV402.S3
 
        public void Render(Recipe recipe) // ska skriva ut receptet som skickades med som argument vid anropet av metoden
         {
-            Console.Clear();
+            
             RenderHeader(recipe.Name);
             int numberBefore = 1;
 
